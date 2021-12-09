@@ -1,19 +1,20 @@
-// SPDX-License-Identifier: MIT
-pragma solidity >=0.4.22 <0.8.0;
+pragma solidity ^0.5.0;
 
-contract Migrations {
-  address public owner = msg.sender;
-  uint public last_completed_migration;
+contract Adoption {
 
-  modifier restricted() {
-    require(
-      msg.sender == owner,
-      "This function is restricted to the contract's owner"
-    );
-    _;
+  address[16] public adopters;  // 保存领养者的地址
+
+    // 领养宠物
+  function adopt(uint petId) public returns (uint) {
+    require(petId >= 0 && petId <= 15);  // 确保id在数组长度内
+
+    adopters[petId] = msg.sender;        // 保存调用这地址
+    return petId;
   }
 
-  function setCompleted(uint completed) public restricted {
-    last_completed_migration = completed;
+  // 返回领养者
+  function getAdopters() public view returns (address[16] memory) {
+    return adopters;
   }
+
 }
