@@ -51,9 +51,18 @@ App = {
   },
 
   initContract: function () {
-    /*
-     * Replace me...
-     */
+    // 加载Adoption.json，保存了Adoption的ABI（接口说明）信息及部署后的网络(地址)信息，它在编译合约的时候生成ABI，在部署的时候追加网络信息
+    $.getJSON("Adoption.json", function (data) {
+      // 用Adoption.json数据创建一个可交互的TruffleContract合约实例。
+      var AdoptionArtifact = data;
+      App.contracts.Adoption = TruffleContract(AdoptionArtifact);
+
+      // Set the provider for our contract
+      App.contracts.Adoption.setProvider(App.web3Provider);
+
+      // Use our contract to retrieve and mark the adopted pets
+      return App.markAdopted();
+    });
 
     return App.bindEvents();
   },
